@@ -367,4 +367,12 @@ class IntlDatetime extends \DateTime {
 
 		return $result;
 	}
+	
+	/**
+	* echo object as string
+	**/
+	public function __toString ()
+	{
+		return $this->format('yyyy/MM/dd H:m:s');
+	}
 }
