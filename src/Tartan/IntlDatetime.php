@@ -13,7 +13,7 @@
 
 namespace Tartan;
 
-class IntlDateTime extends \DateTime {
+class IntlDatetime extends \DateTime {
 
 	/**
 	 * @var string The current locale in use
