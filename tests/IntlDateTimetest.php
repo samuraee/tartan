@@ -3,20 +3,20 @@ require(__DIR__ . '/../src/Tartan/IntlDatetime.php');
 
 use \Tartan\IntlDatetime;
 
-class IntlDateTimeTest extends PHPUnit_Framework_TestCase 
+class IntlDatetimeTest extends PHPUnit_Framework_TestCase 
 {
 	function testCalendars() 
 	{
 		$expected = strtotime('2010/01/13');
-		$date = new IntlDateTime('2010/01/13', null, 'gregorian');
+		$date = new IntlDatetime('2010/01/13', null, 'gregorian');
 		$result = $date->getTimestamp();
 		$this->assertEquals($result, $expected);
 
-		$date = new IntlDateTime('1431/01/27', null, 'islamic-civil');
+		$date = new IntlDatetime('1431/01/27', null, 'islamic-civil');
 		$result = $date->getTimestamp();
 		$this->assertEquals($result, $expected);
 
-		$date = new IntlDateTime('1388/10/23', null, 'persian');
+		$date = new IntlDatetime('1388/10/23', null, 'persian');
 		$result = $date->getTimestamp();
 		$this->assertEquals($result, $expected);
 
@@ -33,7 +33,7 @@ class IntlDateTimeTest extends PHPUnit_Framework_TestCase
 
 	function testLocales() 
 	{
-		$date = new IntlDateTime('۲۰۱۰/۰۱/۱۳ ۱۲:۴۲:۲۰', null, 'gregorian', 'fa');
+		$date = new IntlDatetime('۲۰۱۰/۰۱/۱۳ ۱۲:۴۲:۲۰', null, 'gregorian', 'fa');
 		$result = $date->format('yyyy/MM/dd HH:mm:ss');
 		$this->assertEquals($result, '۲۰۱۰/۰۱/۱۳ ۱۲:۴۲:۲۰');
 
@@ -50,7 +50,7 @@ class IntlDateTimeTest extends PHPUnit_Framework_TestCase
 
 	function testSet() 
 	{
-		$date = new IntlDateTime('now', null, 'gregorian');
+		$date = new IntlDatetime('now', null, 'gregorian');
 
 		$date->set('2009/1/2 01:00 PM');
 		$result = $date->format('yyyy/MM/dd HH:mm:ss');
@@ -126,7 +126,7 @@ class IntlDateTimeTest extends PHPUnit_Framework_TestCase
 
 	function testModify() 
 	{
-		$date = new IntlDateTime('1388/04/01', 'Asia/Tehran', 'persian');
+		$date = new IntlDatetime('1388/04/01', 'Asia/Tehran', 'persian');
 		$date->modify('+1 month');
 		$result = $date->format('yyyy/MM/dd HH:mm:ss');
 		$this->assertEquals($result, '1388/05/01 00:00:00');
@@ -159,30 +159,30 @@ class IntlDateTimeTest extends PHPUnit_Framework_TestCase
 
 	function testGetTimestamp() 
 	{
-		$date = new IntlDateTime('2010/01/01');
+		$date = new IntlDatetime('2010/01/01');
 		$result = $date->getTimestamp();
 		$expected = strtotime('2010/01/01');
 		$this->assertEquals($result, $expected);
 
-		$date = new IntlDateTime('2010/06/01 08:50 PM');
+		$date = new IntlDatetime('2010/06/01 08:50 PM');
 		$result = $date->getTimestamp();
 		$expected = strtotime('2010/06/01 08:50 PM');
 		$this->assertEquals($result, $expected);
 
-		$date = new IntlDateTime('last year');
+		$date = new IntlDatetime('last year');
 		$result = $date->getTimestamp();
 		$expected = strtotime('last year');
 		$this->assertEquals($result, $expected);
 
 		$now = time();
-		$date = new IntlDateTime($now);
+		$date = new IntlDatetime($now);
 		$result = $date->getTimestamp();
 		$this->assertEquals($result, $now);
 	}
 
 	function testSetDate() 
 	{
-		$date = new IntlDateTime('yesterday');
+		$date = new IntlDatetime('yesterday');
 		$date->setDate(2009, 1, 15);
 		$result = $date->format('yyyy/MM/dd HH:mm:ss');
 		$this->assertEquals($result, '2009/01/15 00:00:00');
