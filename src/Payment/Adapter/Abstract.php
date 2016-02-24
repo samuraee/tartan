@@ -46,9 +46,9 @@ abstract class AdapterAbstract
 		return isset($this->_config[$key]) ? $this->_config[$key] : null;
 	}
 
-	public function __call ($name, $arguments)
+	public function __call ($name, array $arguments = [])
 	{
-		$this->_log($name, $arguments);
+		$this->_log($name, $arguments, 'info');
 		call_user_func_array([$this, 'setOptions'], $arguments);
 		$exception = false;
 		$return    = null;
@@ -60,12 +60,12 @@ abstract class AdapterAbstract
 				'message' => $e->getMessage(),
 				'code'    => $e->getCode(),
 				'file'    => $e->getFile() . ':' . $e->getLine()
-			]);
+			],'critical');
 			$exception = true;
 		}
 		if (!$exception) {
 			if (!is_array($return)) {
-				$return = [$return];
+				$return = ['response' => $return];
 			}
 			$this->_log($name, $return);
 		}
@@ -79,7 +79,7 @@ abstract class AdapterAbstract
 			$arguments = (array) $arguments;
 		}
 
-		$arguments ['tag'] = get_class($this);
+		$arguments ['tag'] = str_replace('\\', '_' , get_class($this));
 
 		Log::$logLevel($message, $arguments);
 	}
