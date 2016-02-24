@@ -2,6 +2,7 @@
 namespace Tartan;
 
 use Tartan\Payment\Adapter\AdapterInterface;
+use Tartan\Payment\Adapter\AdapterAbstract;
 use Tartan\Payment\Exception;
 
 class Payment
@@ -15,18 +16,35 @@ class Payment
         $this->options = $options;
     }
 
+	/**
+	 * @return string
+	 */
     public function generateForm() {
         return $this->gateway->generateForm($this->options);
     }
 
+	/**
+	 * @return string
+	 */
     public function verifyTransaction() {
         return $this->gateway->verifyTransaction($this->options);
     }
 
+	/**
+	 * @return string
+	 */
     public function reverseTransaction() {
         return $this->gateway->reverseTransaction($this->options);
     }
 
+	/**
+	 * @param $adapter
+	 * @param array $options
+	 * @param array $banks
+	 *
+	 * @return \Tartan\Payment\Adapter\AdapterAbstract
+	 * @throws \Tartan\Payment\Exception
+	 */
     public static function factory($adapter, array $options = [], array $banks = [])
     {
         if (!is_array($options)) {
@@ -55,7 +73,7 @@ class Payment
         }
 
         $adapterNamespace = 'Tartan\Payment\Adapter\\';
-        $adapterName  = $adapterNamespace . $adapter;
+        $adapterName  = $adapterNamespace . ucfirst(strtolower($adapter));
 
         if (!class_exists($adapterName)) {
             throw new Exception(
@@ -65,9 +83,9 @@ class Payment
 
         $bankAdapter = new $adapterName($options);
 
-        if (!$bankAdapter instanceof Fox_EPayment_Adapter_Abstract) {
+        if (!$bankAdapter instanceof AdapterAbstract) {
             throw new Exception(
-                "Adapter class '$adapterName' does not extend Fox_EPayment_Adapter_Abstract"
+                "Adapter class '$adapterName' does not extend \\Tartan\\Payment\\Adapter\\AdapterAbstract"
             );
         }
 
