@@ -165,6 +165,16 @@ abstract class AdapterAbstract
 		return $ipAddress;
 	}
 
+	public function reverseSupport()
+	{
+		return $this->reverseSupport;
+	}
+
+	public function validateReturnsAmount()
+	{
+		return $this->validateReturnsAmount;
+	}
+
 	public function init () {}
 
 	abstract public function getInvoiceId ();
