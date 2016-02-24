@@ -2,6 +2,7 @@
 namespace Tartan\Payment\Adapter;
 
 use Illuminate\Support\Facades\Log;
+use Illuminate\Http\Request;
 
 abstract class AdapterAbstract
 {
@@ -46,8 +47,10 @@ abstract class AdapterAbstract
 		return isset($this->_config[$key]) ? $this->_config[$key] : null;
 	}
 
-	public function __call ($name, array $arguments = [])
+	public function __call ($name, array $arguments = [], Request $request)
 	{
+		$arguments ['caller_ips'] = $request->ips();
+
 		$this->_log($name, $arguments, 'info');
 		call_user_func_array([$this, 'setOptions'], $arguments);
 		$exception = false;
