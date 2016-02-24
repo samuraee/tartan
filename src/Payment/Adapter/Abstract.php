@@ -48,23 +48,27 @@ abstract class AdapterAbstract
 
 	public function __call ($name, $arguments)
 	{
-		$this->_log($name, $arguments, self::BEFORE_CALL);
-		call_user_func_array(array($this, 'setOptions'), $arguments);
+		$this->_log($name, $arguments);
+		call_user_func_array([$this, 'setOptions'], $arguments);
 		$exception = false;
 		$return    = null;
 
 		try {
-			$return = call_user_func_array(array($this, 'do' . $name), array());
+			$return = call_user_func_array([$this, 'do' . $name], []);
 		} catch (Exception $e) {
 			$this->_log($name, [
 				'message' => $e->getMessage(),
 				'code'    => $e->getCode(),
 				'file'    => $e->getFile() . ':' . $e->getLine()
-			], self::AFTER_CALL);
+			]);
 			$exception = true;
 		}
-		if (!$exception)
-			$this->_log($name, $return, self::AFTER_CALL);
+		if (!$exception) {
+			if (!is_array($return)) {
+				$return = [$return];
+			}
+			$this->_log($name, $return);
+		}
 
 		return $return;
 	}
