@@ -65,9 +65,10 @@ abstract class AdapterAbstract
 		}
 		if (!$exception) {
 			if (!is_array($return)) {
-				$return = ['response' => $return];
+				$this->_log($name, ['response' => $return]);
+			} else {
+				$this->_log($name, $return);
 			}
-			$this->_log($name, $return);
 		}
 
 		return $return;
