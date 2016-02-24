@@ -21,23 +21,6 @@ class Saman extends AdapterAbstract
 
     public $validateReturnsAmount = true;
 
-    public function setOptions(array $options = array())
-    {
-        parent::setOptions($options);
-        foreach ($this->_config as $name => $value) {
-            switch ($name) {
-            case 'resnum':
-                if (preg_match('/^[a-z0-9]+$/', $value))
-                    $this->reservationNumber = $value;
-                break;
-            case 'refnum':
-                if (strlen($value) === 20)
-                    $this->refId = $value;
-                break;
-            }
-        }
-    }
-
     public function getInvoiceId()
     {
         if (!isset($this->_config['reservation_number'])) {

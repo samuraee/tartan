@@ -6,10 +6,6 @@ use Illuminate\Http\Request;
 
 abstract class AdapterAbstract
 {
-	const BEFORE_CALL = 'in';
-
-	const AFTER_CALL = 'out';
-
 	protected $_END_POINT = null;
 
 	protected $_MOBILE_END_POINT = null;
