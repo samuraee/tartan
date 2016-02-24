@@ -81,11 +81,11 @@ class Saman extends AdapterAbstract
 	        $action = $this->getEndPoint();
         }
 
-        $form  = sprintf('<form id="goto-bank-form" method="post" action="%s" class="form-horizontal">', $action );
-        $form .= sprintf('<input name="Amount" value="%d">', $this->_config['amount']);
-        $form .= sprintf('<input name="MID" value="%s">', $this->_config['terminal_id']);
-        $form .= sprintf('<input name="ResNum" value="%s">', $this->_config['reservation_number']);
-        $form .= sprintf('<input name="RedirectURL" value="%s">', $this->_config['redirect_url']);
+        $form  = sprintf('<form id="goto-gate-form" method="post" action="%s">', $action );
+        $form .= sprintf('<input type="hidden" name="Amount" value="%d">', $this->_config['amount']);
+        $form .= sprintf('<input type="hidden" name="MID" value="%s">', $this->_config['terminal_id']);
+        $form .= sprintf('<input type="hidden" name="ResNum" value="%s">', $this->_config['reservation_number']);
+        $form .= sprintf('<input type="hidden" name="RedirectURL" value="%s">', $this->_config['redirect_url']);
 
         if (isset($this->_config['logo_uri'])) {
             $form .= sprintf('<input name="LogoURI" value="%s">', $this->_config['logo_uri']);
