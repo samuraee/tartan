@@ -47,9 +47,9 @@ abstract class AdapterAbstract
 		return isset($this->_config[$key]) ? $this->_config[$key] : null;
 	}
 
-	public function __call ($name, array $arguments = [], Request $request)
+	public function __call ($name, array $arguments = [])
 	{
-		$arguments ['caller_ips'] = $request->ips();
+		$arguments ['caller_ips'] = self::getClientIpAddress();
 
 		$this->_log($name, $arguments, 'info');
 		call_user_func_array([$this, 'setOptions'], $arguments);
@@ -147,6 +147,26 @@ abstract class AdapterAbstract
 				return $this->_TEST_END_POINT;
 			}
 		}
+	}
+
+	public static function getClientIpAddress() {
+		$ipAddress = '';
+		if ($_SERVER['HTTP_CLIENT_IP'])
+			$ipAddress = $_SERVER['HTTP_CLIENT_IP'];
+		else if($_SERVER['HTTP_X_FORWARDED_FOR'])
+			$ipAddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
+		else if($_SERVER['HTTP_X_FORWARDED'])
+			$ipAddress = $_SERVER['HTTP_X_FORWARDED'];
+		else if($_SERVER['HTTP_FORWARDED_FOR'])
+			$ipAddress = $_SERVER['HTTP_FORWARDED_FOR'];
+		else if($_SERVER['HTTP_FORWARDED'])
+			$ipAddress = $_SERVER['HTTP_FORWARDED'];
+		else if($_SERVER['REMOTE_ADDR'])
+			$ipAddress = $_SERVER['REMOTE_ADDR'];
+		else
+			$ipAddress = 'UNKNOWN';
+
+		return $ipAddress;
 	}
 
 	public function init () {}
