@@ -32,7 +32,7 @@ class Saman extends AdapterAbstract
                 break;
             case 'refnum':
                 if (strlen($value) === 20)
-                    $this->referenceId = $value;
+                    $this->refId = $value;
                 break;
             }
         }
@@ -40,18 +40,18 @@ class Saman extends AdapterAbstract
 
     public function getInvoiceId()
     {
-        if (!isset($this->_config['reservationNumber'])) {
+        if (!isset($this->_config['reservation_number'])) {
             return null;
         }
-        return $this->_config['reservationNumber'];
+        return $this->_config['reservation_number'];
     }
 
     public function getReferenceId()
     {
-        if (!isset($this->_config['referenceId'])) {
+        if (!isset($this->_config['ref_id'])) {
             return null;
         }
-        return $this->_config['referenceId'];
+        return $this->_config['ref_id'];
     }
 
     public function getStatus()
@@ -64,7 +64,7 @@ class Saman extends AdapterAbstract
 
     public function doGenerateForm(array $options = array())
     {
-	    if (isset($this->_config['withToken']) && $this->_config['withToken']) {
+	    if (isset($this->_config['with_token']) && $this->_config['with_token']) {
 		    return $this->doGenerateFormWithToken($options);
 	    } else {
 		    return $this->doGenerateFormWithoutToken($options); // default
@@ -73,9 +73,9 @@ class Saman extends AdapterAbstract
     public function doGenerateFormWithoutToken(array $options = array())
     {
         $this->setOptions($options);
-        $this->_checkRequiredOptions(['amount', 'merchantCode', 'reservationNumber', 'redirectAddress']);
+        $this->_checkRequiredOptions(['amount', 'terminal_id', 'reservation_number', 'redirect_url']);
 
-        if (isset($this->_config['isMobile']) && $this->_config['isMobile']) {
+        if (isset($this->_config['isMobile']) && $this->_config['is_mobile']) {
 	        $action = $this->getEndPoint(true);
         } else {
 	        $action = $this->getEndPoint();
@@ -83,12 +83,12 @@ class Saman extends AdapterAbstract
 
         $form  = sprintf('<form id="goto-bank-form" method="post" action="%s" class="form-horizontal">', $action );
         $form .= sprintf('<input name="Amount" value="%d">', $this->_config['amount']);
-        $form .= sprintf('<input name="MID" value="%s">', $this->_config['merchantCode']);
-        $form .= sprintf('<input name="ResNum" value="%s">', $this->_config['reservationNumber']);
-        $form .= sprintf('<input name="RedirectURL" value="%s">', $this->_config['redirectAddress']);
+        $form .= sprintf('<input name="MID" value="%s">', $this->_config['terminal_id']);
+        $form .= sprintf('<input name="ResNum" value="%s">', $this->_config['reservation_number']);
+        $form .= sprintf('<input name="RedirectURL" value="%s">', $this->_config['redirect_url']);
 
-        if (isset($this->_config['logoUri'])) {
-            $form .= sprintf('<input name="LogoURI" value="%s">', $this->_config['logoUri']);
+        if (isset($this->_config['logo_uri'])) {
+            $form .= sprintf('<input name="LogoURI" value="%s">', $this->_config['logo_uri']);
         }
 
         $label = isset($this->_config['submitLabel']) ? $this->_config['submitLabel'] : Lang::trans("global.go_to_gateway");
@@ -103,9 +103,9 @@ class Saman extends AdapterAbstract
 	public function doGenerateFormWithToken(array $options = array())
 	{
 		$this->setOptions($options);
-		$this->_checkRequiredOptions(['amount', 'merchantCode', 'reservationNumber', 'redirectAddress']);
+		$this->_checkRequiredOptions(['amount', 'terminal_id', 'reservation_number', 'redirect_url']);
 
-		if (isset($this->_config['isMobile']) && $this->_config['isMobile']) {
+		if (isset($this->_config['is_mobile']) && $this->_config['is_mobile']) {
 			$action = $this->getEndPoint(true);
 		} else {
 			$action = $this->getEndPoint();
@@ -116,9 +116,9 @@ class Saman extends AdapterAbstract
 			$soapClient = new SoapClient($this->getWSDL());
 
 			$sendParams = array(
-				'pin'         => $this->_config['merchantCode'],
+				'pin'         => $this->_config['terminal_id'],
 				'amount'      => $this->_config['amount'],
-				'orderId'     => $this->_config['orderId']
+				'orderId'     => $this->_config['order_id']
 			);
 
 			$res = $soapClient->__soapCall('PinPaymentRequest', $sendParams);
@@ -130,15 +130,15 @@ class Saman extends AdapterAbstract
 
 		$form  = sprintf('<form id="goto-bank-form" method="post" action="%s" class="form-horizontal">', $action );
 		$form .= sprintf('<input name="Amount" value="%d">', $this->_config['amount']);
-		$form .= sprintf('<input name="MID" value="%s">', $this->_config['merchantCode']);
-		$form .= sprintf('<input name="ResNum" value="%s">', $this->_config['reservationNumber']);
-		$form .= sprintf('<input name="RedirectURL" value="%s">', $this->_config['redirectAddress']);
+		$form .= sprintf('<input name="MID" value="%s">', $this->_config['terminal_id']);
+		$form .= sprintf('<input name="ResNum" value="%s">', $this->_config['reservation_number']);
+		$form .= sprintf('<input name="RedirectURL" value="%s">', $this->_config['redirect_url']);
 
-		if (isset($this->_config['logoUri'])) {
-			$form .= sprintf('<input name="LogoURI" value="%s">', $this->_config['logoUri']);
+		if (isset($this->_config['logo_uri'])) {
+			$form .= sprintf('<input name="LogoURI" value="%s">', $this->_config['logo_uri']);
 		}
 
-		$label = isset($this->_config['submitLabel']) ? $this->_config['submitLabel'] : Lang::trans("global.go_to_gateway");
+		$label = isset($this->_config['submit_label']) ? $this->_config['submit_label'] : Lang::trans("global.go_to_gateway");
 
 		$form .= sprintf('<div class="control-group"><div class="controls"><input type="submit" class="btn btn-success" value="%s"></div></div>', $label);
 
@@ -150,9 +150,9 @@ class Saman extends AdapterAbstract
     public function doVerifyTransaction(array $options = array())
     {
         $this->setOptions($options);
-        $this->_checkRequiredOptions(['referenceId', 'merchantCode', 'state']);
+        $this->_checkRequiredOptions(['ref_id', 'terminal_id', 'state']);
 
-        if ($this->_config['referenceId'] == '') {
+        if ($this->_config['ref_id'] == '') {
 	        throw new Exception('Error: ' . $this->_config['state']);
         }
 
@@ -164,7 +164,7 @@ class Saman extends AdapterAbstract
             }
 
             $res = $soapClient->VerifyTransaction(
-                $this->_config['referenceId'], $this->_config['merchantCode']
+                $this->_config['ref_id'], $this->_config['terminal_id']
             );
         } catch (SoapFault $e) {
             $this->_log($e->getMessage());
@@ -177,18 +177,18 @@ class Saman extends AdapterAbstract
     public function doReverseTransaction(array $options = array())
     {
         $this->setOptions($options);
-        $this->_checkRequiredOptions(['referenceId', 'merchantCode', 'password', 'amount']);
+        $this->_checkRequiredOptions(['ref_id', 'terminal_id', 'password', 'amount']);
 
         try {
-            if (isset($this->_config['useHttps']) && $this->_config['useHttps'] === false) {
+            if (isset($this->_config['use_https']) && $this->_config['use_https'] === false) {
                 $soapClient = new SoapClient($this->getWSDL());
             } else {
                 $soapClient = new SoapClient($this->getWSDL(true));
             }
 
             $res = $soapClient->reverseTransaction(
-                $this->_config['referenceId'],
-                $this->_config['merchantCode'],
+                $this->_config['ref_id'],
+                $this->_config['terminal_id'],
                 $this->_config['password'],
                 $this->_config['amount']
             );
