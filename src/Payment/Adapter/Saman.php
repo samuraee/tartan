@@ -21,6 +21,21 @@ class Saman extends AdapterAbstract
 
     public $validateReturnsAmount = true;
 
+	public function setOptions(array $options = array())
+	{
+		parent::setOptions($options);
+		foreach ($this->_config as $name => $value) {
+			switch ($name) {
+				case 'resnum':
+						$this->_config['reservation_number'] = $value;
+					break;
+				case 'refnum':
+						$this->_config['ref_id'] = $value;
+					break;
+			}
+		}
+	}
+
     public function getInvoiceId()
     {
         if (!isset($this->_config['reservation_number'])) {
@@ -163,7 +178,7 @@ class Saman extends AdapterAbstract
         $this->_checkRequiredOptions(['ref_id', 'terminal_id', 'password', 'amount']);
 
         try {
-            if (isset($this->_config['use_https']) && $this->_config['use_https'] === false) {
+            if (isset($this->_config['use_https']) && $this->_config['use_https'] == false) {
                 $soapClient = new SoapClient($this->getWSDL());
             } else {
                 $soapClient = new SoapClient($this->getWSDL(true));
