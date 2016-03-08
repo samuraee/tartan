@@ -89,7 +89,7 @@ class Saman extends AdapterAbstract
             $form .= sprintf('<input name="LogoURI" value="%s">', $this->_config['logo_uri']);
         }
 
-        $label = isset($this->_config['submitLabel']) ? $this->_config['submitLabel'] : Lang::trans("global.go_to_gateway");
+        $label = isset($this->_config['submitLabel']) ? $this->_config['submitLabel'] : trans("payment.goto_gateway");
 
         $form .= sprintf('<div class="control-group"><div class="controls"><input type="submit" class="btn btn-success" value="%s"></div></div>', $label);
 
@@ -136,7 +136,7 @@ class Saman extends AdapterAbstract
 			$form .= sprintf('<input name="LogoURI" value="%s">', $this->_config['logo_uri']);
 		}
 
-		$label = isset($this->_config['submit_label']) ? $this->_config['submit_label'] : Lang::trans("global.go_to_gateway");
+		$label = isset($this->_config['submit_label']) ? $this->_config['submit_label'] : trans("payment.goto_gateway");
 
 		$form .= sprintf('<div class="control-group"><div class="controls"><input type="submit" class="btn btn-success" value="%s"></div></div>', $label);
 
