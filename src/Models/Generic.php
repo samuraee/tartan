@@ -3,16 +3,19 @@
 namespace Tartan\Models;
 
 use ArrayAccess;
-use Tartan\Exception;
+//use Tartan\Exception;
 
-class generic
+class generic implements ArrayAccess
 {
 
 	var $vars;
 
 	//constructor
-	function generic ()
+	function __construct ($array)
 	{
+		if (is_array($array) || ($array instanceof \stdClass)) {
+			$this->vars = $array;
+		}
 	}
 
 	// gets a value
@@ -61,4 +64,23 @@ class generic
 		return $this->vars;
 	}
 
+	public function offsetExists($offset)
+	{
+        return isset($this->vars[$offset]);
+    }
+
+	public function offsetSet($offset, $value)
+    {
+        $this->vars[$offset] = $value;
+    }
+
+	public function offsetUnset($offset)
+	{
+        unset($this->vars[$offset]);
+    }
+
+	public function offsetGet($offset)
+	{
+        return isset($this->vars[$offset]) ? $this->vars[$offset] : null;
+    }
 }
