@@ -8,26 +8,32 @@ use ArrayAccess;
 class generic implements ArrayAccess
 {
 
-	var $vars;
+	var $data;
 
 	//constructor
 	function __construct ($array)
 	{
-		if (is_array($array) || ($array instanceof \stdClass)) {
-			$this->vars = $array;
-		}
+		$this->load($array);
 	}
 
 	// gets a value
-	function get ($var)
+	function __get ($var)
 	{
-		return $this->vars[$var];
+		return $this->data[$var];
+	}
+	// sets a key => value
+	function __set ($key, $value)
+	{
+		$this->data[$key] = $value;
 	}
 
-	// sets a key => value
-	function set ($key, $value)
+	function __isset($key) {
+		return isset($this->data[$key]);
+	}
+
+	function __unset ($key)
 	{
-		$this->vars[$key] = $value;
+		unset($this->data[$key]);
 	}
 
 	// loads a key => value array into the class
@@ -35,52 +41,52 @@ class generic implements ArrayAccess
 	{
 		if (is_array($array) || ($array instanceof \stdClass)) {
 			foreach ($array as $key => $value) {
-				$this->vars[$key] = $value;
+				$this->data[$key] = $value;
 			}
 		}
 	}
 
 	// empties a specified setting or all of them
-	function unload ($vars = '')
+	function unload ($data = '')
 	{
-		if ($vars) {
-			if (is_array($vars)) {
-				foreach ($vars as $var) {
-					unset($this->vars[$var]);
+		if ($data) {
+			if (is_array($data)) {
+				foreach ($data as $var) {
+					unset($this->data[$var]);
 				}
 			}
 			else {
-				unset($this->vars[$vars]);
+				unset($this->data[$data]);
 			}
 		}
 		else {
-			$this->vars = array();
+			$this->data = array();
 		}
 	}
 
 	/* return the object as an array */
 	function get_all ()
 	{
-		return $this->vars;
+		return $this->data;
 	}
 
 	public function offsetExists($offset)
 	{
-        return isset($this->vars[$offset]);
+        return isset($this->data[$offset]);
     }
 
 	public function offsetSet($offset, $value)
     {
-        $this->vars[$offset] = $value;
+        $this->data[$offset] = $value;
     }
 
 	public function offsetUnset($offset)
 	{
-        unset($this->vars[$offset]);
+        unset($this->data[$offset]);
     }
 
 	public function offsetGet($offset)
 	{
-        return isset($this->vars[$offset]) ? $this->vars[$offset] : null;
+        return isset($this->data[$offset]) ? $this->data[$offset] : null;
     }
 }
