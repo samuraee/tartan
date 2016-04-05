@@ -5,7 +5,7 @@ namespace Tartan\Models;
 use ArrayAccess;
 //use Tartan\Exception;
 
-class generic implements ArrayAccess
+class Generic implements ArrayAccess
 {
 
 	var $data;
