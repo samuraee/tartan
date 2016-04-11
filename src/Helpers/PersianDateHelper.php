@@ -10,7 +10,7 @@ class PersianDateHelper
 	 * Gregorian to Persian
 	 * @param $date
 	 * @param string $format
-	 * @param string $locale 
+	 * @param string $locale
 	 *
 	 * @return string
 	 */
@@ -39,8 +39,8 @@ class PersianDateHelper
 		$date->setLocale($locale);
 		return $date->format($format);
 	}
-	
-	public function moment($ts) 
+
+	public function moment($ts)
 	{
 		if (!ctype_digit($ts)) {
 		    $ts = strtotime($ts);
@@ -52,9 +52,9 @@ class PersianDateHelper
 		    $day_diff = floor($diff / 86400);
 		    if ($day_diff == 0) {
 		        if($diff < 60) return 'اکنون';
-		        if($diff < 120) return '۱ دقیقه قبل';
+		        if($diff < 120) return 'یک دقیقه قبل';
 		        if($diff < 3600) return floor($diff / 60) . ' دقیقه قبل';
-		        if($diff < 7200) return '1 hour ago';
+		        if($diff < 7200) return 'یک ساعت پیش';
 		        if($diff < 86400) return floor($diff / 3600) . ' ساعت قبل';
 		    }
 		    if($day_diff == 1) { return 'دیروز'; }
@@ -79,8 +79,8 @@ class PersianDateHelper
 		    return date('F Y', $ts);
 		}
 	}
-	
-	public function momentEn($ts) 
+
+	public function momentEn($ts)
 	{
 		if(!ctype_digit($ts)) {
 		    $ts = strtotime($ts);
