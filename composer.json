@@ -27,7 +27,10 @@
 	"autoload": {
 		"psr-4": {
 			"Tartan\\": "src"
-		}
+		},
+		"files": [
+			"src/Helpers/persianHelpers.php"
+		]
 	},
 	"extra": {
 		"branch-alias": {
