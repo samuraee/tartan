@@ -5,6 +5,15 @@ namespace Tartan\Validators;
 class CustomValidator
 {
 
+	/**
+	 * Validate Password Strength level
+	 * @param $attribute
+	 * @param $value
+	 * @param $parameters
+	 * @param $validator
+	 *
+	 * @return bool
+	 */
 	public function validateStrength($attribute, $value, $parameters, $validator)
 	{
 		if( preg_match('/(?=^.{8,}$)(?=.*\d)(?=.*[!@#$%^&*]+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/', $value) )
@@ -13,6 +22,15 @@ class CustomValidator
 		return false;
 	}
 
+	/**
+	 * Validate Iran Billing Ids
+	 * @param $attribute
+	 * @param $value
+	 * @param $parameters
+	 * @param $validator
+	 *
+	 * @return bool
+	 */
 	public function validateIranBillingId($attribute, $value, $parameters, $validator)
 	{
 		$factor = 2;
@@ -32,4 +50,45 @@ class CustomValidator
 		return ($computedCheckDigit == $givenCheckDigit);
 	}
 
+	/**
+	 * Validate Iran Shetab Card Numbers
+	 * @param $attribute
+	 * @param $value
+	 * @param $parameters
+	 * @param $validator
+	 *
+	 * @return bool
+	 */
+	public function validateShetabCard($attribute, $value, $parameters, $validator)
+	{
+		if(empty($value) || !is_numeric($value))
+		{
+			return false;
+		}
+
+		settype($value, 'string');
+
+		if (preg_match('/^(627353|505801)/', $value)) {
+			if (strlen($value) != 16) {
+				return false;
+			}
+		}
+		else {
+			$sumTable = array(
+				array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9),
+				array(0, 2, 4, 6, 8, 1, 3, 5, 7, 9));
+			$sum      = 0;
+			$flip     = 0;
+
+			for ($i = strlen($value) - 1; $i >= 0; $i--) {
+				$sum += $sumTable[$flip++ & 0x1][$value[$i]];
+			}
+
+			if (!($sum % 10 === 0)) {
+				return false;
+			}
+		}
+
+		return true;
+	}
 }
