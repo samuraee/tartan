@@ -2,120 +2,181 @@
 
 namespace Tartan\Helpers;
 
-class IranianBankHelpers
-{
-	public function cardBankName($cardnumber)
-	{
-		switch (substr($cardnumber,0,6))
-		{
-			case "603799": //1
-				return "بانک ملی";
-				break;
-			case "589210"://2
-				return "بانک سپه";
-				break;
-			case "627648"://3
-				return "بانک توسعه صادرات";
-				break;
-			case "627961"://4
-				return "بانک صنعت و معدن";
-				break;
-			case "603770"://5
-				return "بانک کشاورزي";
-				break;
-			case "628023"://6
-				return "بانک مسکن";
-				break;
-			case "627760"://7
-				return "پست بانک ایران";
-				break;
-			case "502908"://8
-				return "بانک توسعه تعاون";
-				break;
-			case "627412"://9
-				return "بانک اقتصاد نوین";
-				break;
-			case "622106"://10
-				return "بانک پارسیان";
-				break;
-			case "639347" :
-			case "502229"://11
-				return "بانک پاسارگاد";
-				break;
-			case "627488"://12
-				return "بانک کارآفرین";
-				break;
-			case "621986"://13
-				return "بانک سامان";
-				break;
-			case "639346"://14
-				return "بانک سینا";
-				break;
-			case "639607"://15
-				return "بانک سرمایه";
-				break;
-			case "502806"://16
-				return "بانک شهر";
-				break;
-			case "502938"://17
-				return "بانک دی";
-				break;
-			case "603769"://18
-				return "بانک صادرات";
-				break;
-			case "610433"://19
-				return "بانک ملت";
-				break;
-			case "627353"://20
-				return "بانک تجارت";
-				break;
-			case "589463"://21
-				return "بانک رفاه";
-				break;
-			case "627381"://22
-				return "بانک انصار";
-				break;
-			case "636214"://23
-				return "بانک آینده";
-				break;
-			case "606737"://24
-				return "موسسه مالی اعتباری مهر";
-				break;
-			case "628157"://25
-			case "504706"://25
-				return "موسسه اعتباری توسعه";
-				break;
-			case "936450"://26
-				return "بانک مرکزی";
-				break;
-			case "505785"://27
-				return "بانک ایران زمین";
-				break;
-			case "606373"://28
-				return "بانک مهر";
-				break;
-			case "505416"://29
-				return "بانگ گردشگری";
-				break;
-			case "504172":
-				return "بانک رسالت";
-				break;
-			case "639599":
-				return "بانک قوامین";
-				break;
+use Tartan\Exception;
 
+class IranianBankHelper
+{
+	protected static $_cardBinNumber = [
+		['code' => 60, 'bin' => 606373 , 'slug' => 'gharzolhasaneh_mehr', 'name' => 'قرض احسنه مهر'],
+		['code' => 54, 'bin' => 622106 , 'slug' => 'parsian', 'name' => 'پارسیان'],
+		['code' => 62, 'bin' => 636214 , 'slug' => 'ayande', 'name' => 'آینده'],
+		['code' => 16, 'bin' => 603770 , 'slug' => 'keshavarzi', 'name' => 'کشاورزی'],
+		['code' => 16, 'bin' => 639217 , 'slug' => 'keshavarzi', 'name' => 'کشاورزی'],
+		['code' => 14, 'bin' => 628023 , 'slug' => 'maskan', 'name' => 'مسکن'],
+		['code' => 22, 'bin' => 502908 , 'slug' => 'tose_taavon', 'name' => 'توسعه تعاون'],
+		['code' => 13, 'bin' => 589463 , 'slug' => 'refah', 'name' => 'رفاه'],
+		['code' => 12, 'bin' => 610433 , 'slug' => 'mellat', 'name' => 'ملت'],
+		['code' => 52, 'bin' => 621986 , 'slug' => 'saman', 'name' => 'سامان'],
+		['code' => 56, 'bin' => 621986 , 'slug' => 'saman', 'name' => 'سامان'],
+		['code' => 18, 'bin' => 627353 , 'slug' => 'tejarat', 'name' => 'تجارت'],
+		['code' => 55, 'bin' => 627412 , 'slug' => 'eghtesad_novin', 'name' => 'اقتصاد نوین'],
+		['code' => 21, 'bin' => 627760 , 'slug' => 'post', 'name' => 'پست'],
+		['code' => 57, 'bin' => 639347 , 'slug' => 'pasargad', 'name' => 'پاسارگاد'],
+		['code' => 57, 'bin' => 502229 , 'slug' => 'pasargad', 'name' => 'پاسارگاد'],
+		['code' => 58, 'bin' => 639607 , 'slug' => 'sarmaye', 'name' => 'سرمایه'],
+		['code' => 59, 'bin' => 639346 , 'slug' => 'sina', 'name' => ' سینا'],
+		['code' => 63, 'bin' => 627381 , 'slug' => 'ansar', 'name' => 'انصار'],
+		['code' => 19, 'bin' => 603769 , 'slug' => 'saderat', 'name' => 'صادرات'],
+		['code' => 17, 'bin' => 603799 , 'slug' => 'melli', 'name' => 'ملی'],
+		['code' => 20, 'bin' => 627648 , 'slug' => 'tose_saderat', 'name' => 'توسعه صادرات'],
+		['code' => 11, 'bin' => 627961 , 'slug' => 'sanat_madan', 'name' => 'صنعت و معدن'],
+		['code' => 53, 'bin' => 627488 , 'slug' => 'kar_afarin', 'name' => 'کار آفرین'],
+		['code' => 53, 'bin' => 502910 , 'slug' => 'kar_afarin', 'name' => 'کار آفرین'],
+		['code' => 15, 'bin' => 589210 , 'slug' => 'sepah', 'name' => 'سپه'],
+		['code' => 51, 'bin' => 628157 , 'slug' => 'moaseseh_etebari', 'name' => 'موسسه اعتباری'],
+		['code' => 61, 'bin' => 502806 , 'slug' => 'shahr', 'name' => 'شهر'],
+		['code' => 61, 'bin' => 504706 , 'slug' => 'shahr', 'name' => 'شهر'],
+		['code' => 66, 'bin' => 502938 , 'slug' => 'dey', 'name' => 'دی'],
+		['code' => 64, 'bin' => 505416 , 'slug' => 'gardeshgari', 'name' => 'گردشگری'],
+		['code' => 65, 'bin' => 636949 , 'slug' => 'hekmat_iranian', 'name' => 'حکمت ایرانیان'],
+	];
+
+	/**
+	 * @var array
+	 */
+	protected static $_billTypes = [
+		1 => 'آب',
+		2 => 'برق',
+		3 => 'گاز',
+		4 => 'تلفن ثابت',
+		5 => 'تلفن همراه',
+		6 => 'شهرداری',
+		9 => 'راهنمایی و رانندگی'
+	];
+
+	/**
+	 * @param $cardNumber
+	 *
+	 * @return string
+	 */
+	public function cardBankName ($cardNumber)
+	{
+		if (!preg_match('/^\d{16}$/', $cardNumber)) {
+			throw new Exception('Invalid card number format!');
+		}
+		$bin = substr($cardNumber, 0, 6);
+
+		foreach (static::$_cardBinNumber as $row) {
+			if ($row['bin'] == $bin) {
+				return $row;
+				break;
+			}
 		}
 
+		return [];
 	}
 
-	function generateShebaNumber($account, $formated = false)
+	/**
+	 * @param $cardNumber
+	 *
+	 * @return string
+	 */
+	public function shebaBankName ($shebaNumber)
+	{
+		if (preg_match('/^ir\d{24}$/i', $shebaNumber)) {
+			$code = intval(substr($shebaNumber, 4, 3));
+		} else if (preg_match('/^\d{24}$/i', $shebaNumber)){
+			$code = intval(substr($shebaNumber, 2, 3));
+		} else {
+			throw new Exception('Invalid sheba number format!');
+		}
+
+		foreach (static::$_cardBinNumber as $row) {
+			if ($row['code'] == $code) {
+				return $row;
+				break;
+			}
+		}
+
+		return [];
+	}
+
+	/**
+	 * @param $account
+	 * @param bool $formatted
+	 *
+	 * @return string
+	 */
+	public function generateShebaNumber ($account, $formatted = false)
 	{
 		$section = 98 - bcmod('62000000' . $account . '182700', 97);
-		$sheba = sprintf('IR%s%s%s', str_pad($section, 2, '0', STR_PAD_LEFT), '062000000', $account);
-		if($formated)
+		$sheba   = sprintf('IR%s%s%s', str_pad($section, 2, '0', STR_PAD_LEFT), '062000000', $account);
+		if ($formatted)
 			return substr(chunk_split($sheba, 4, '-'), 0, -1);
 		else
 			return $sheba;
+	}
+
+	/**
+	 * @param $billId
+	 *
+	 * @return mixed
+	 */
+	protected function getBillType ($billId)
+	{
+		return static::$_billTypes[substr($billId, -2, -1)];
+	}
+
+	/**
+	 * @param $billId
+	 *
+	 * @return string
+	 */
+	protected static function getBillID ($billId)
+	{
+		return substr($billId, -2, -1);
+	}
+
+	/**
+	 * @param $payId
+	 * @param string $billId
+	 *
+	 * @return bool
+	 */
+	public static function isValidBillInfo ($payId, $billId = "")
+	{
+		$factor             = 2;
+		$computedCheckDigit = 0;
+		$code               = $billId . $payId;
+		$givenCheckDigit    = substr($code, -1);
+
+		for ($i = strlen($code) - 2; $i >= 0; --$i, ++$digit) {
+			$digit = $code[$i];
+			$computedCheckDigit += $digit * $factor;
+			$factor = ($factor == 7) ? 2 : ++$factor;
+		}
+
+		$computedCheckDigit %= 11;
+		$computedCheckDigit = ($computedCheckDigit <= 1) ? 0 : 11 - $computedCheckDigit;
+
+		return ($computedCheckDigit == $givenCheckDigit);
+	}
+
+	public function billInfo ($billId, $payId)
+	{
+		$bill                = new \stdClass();
+		$bill->amount        = intval(substr($payId, 0, -5)) * 1000;
+		$bill->company       = $this->getBillType($billId);
+		$bill->billIdType    = $this->getBillID($billId);
+		$bill->period        = intval(substr($payId, -4, -2));
+		$bill->isValidBillId = $this->isValidBillInfo($billId) && !((strlen($billId) < 6) || (strlen($billId) > 13));
+		$bill->isValidPayId  = $this->isValidBillInfo(substr($payId, 0, strlen($payId) - 1)) && !((strlen($payId) < 6) || (strlen($payId) > 13));
+		//$bill->year          = intval(substr($data['payId'], -5, -4));
+
+		$bill->isValid = $this->isValidBillInfo($payId, $billId) && $bill->isValidPayId && $bill->isValidBillId;
+
+
+		return $bill;
 	}
 }
 
