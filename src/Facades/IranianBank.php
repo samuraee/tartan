@@ -4,11 +4,11 @@ namespace Tartan\Facades;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * Class Tarikh
+ * Class IranBank
  * @package Tartan\Facades
  * @author Tartan <iamtartan@gmail.com>
  */
-class Tarikh extends Facade
+class IranianBank extends Facade
 {
 	/**
 	 * Get the registered name of the component.
@@ -17,6 +17,6 @@ class Tarikh extends Facade
 	 */
 	protected static function getFacadeAccessor()
 	{
-		return 'Tartan\Helpers\PersianDateHelper';
+		return 'Tartan\Helpers\IranianBankHelper';
 	}
 }
