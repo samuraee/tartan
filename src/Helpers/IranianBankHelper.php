@@ -73,7 +73,7 @@ class IranianBankHelper
 			}
 		}
 
-		return [];
+		throw new Exception('could not detect card`s vendor name!');
 	}
 
 	/**
@@ -98,7 +98,7 @@ class IranianBankHelper
 			}
 		}
 
-		return [];
+		throw new Exception('could not sheba account`s vendor name!');
 	}
 
 	/**
