@@ -127,7 +127,7 @@ class IranianBankHelper
 	 * @return array
 	 * @throws Exception
 	 */
-	protected function getBillType ($billId)
+	public function getBillType ($billId)
 	{
 		if (isset(static::$_billTypes[substr($billId, -2, -1)])) {
 			return static::$_billTypes[substr($billId, -2, -1)];
@@ -141,7 +141,7 @@ class IranianBankHelper
 	 *
 	 * @return string
 	 */
-	protected static function getBillID ($billId)
+	public function getBillID ($billId)
 	{
 		return substr($billId, -2, -1);
 	}
