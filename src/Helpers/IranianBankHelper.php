@@ -7,7 +7,7 @@ use Tartan\Exception;
 class IranianBankHelper
 {
 	protected static $_cardBinNumber = [
-		['code' => 60, 'bin' => 606373 , 'slug' => 'gharzolhasaneh_mehr', 'name' => 'قرض احسنه مهر'],
+		['code' => 60, 'bin' => 606373 , 'slug' => 'gharzolhasaneh_mehr', 'name' => 'قرض الحسنه مهر'],
 		['code' => 54, 'bin' => 622106 , 'slug' => 'parsian', 'name' => 'پارسیان'],
 		['code' => 62, 'bin' => 636214 , 'slug' => 'ayande', 'name' => 'آینده'],
 		['code' => 16, 'bin' => 603770 , 'slug' => 'keshavarzi', 'name' => 'کشاورزی'],
