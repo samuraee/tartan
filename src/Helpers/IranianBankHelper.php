@@ -45,19 +45,20 @@ class IranianBankHelper
 	 * @var array
 	 */
 	protected static $_billTypes = [
-		1 => 'آب',
-		2 => 'برق',
-		3 => 'گاز',
-		4 => 'تلفن ثابت',
-		5 => 'تلفن همراه',
-		6 => 'شهرداری',
-		9 => 'راهنمایی و رانندگی'
+		1 => ['slug' => 'ab', 'name' => 'آب'],
+		2 => ['slug' => 'bargh', 'name' => 'برق'],
+		3 => ['slug' => 'gaz', 'name' => 'گاز'],
+		4 => ['slug' => 'tel', 'name' => 'تلفن ثابت'],
+		5 => ['slug' => 'mobile' , 'name' => 'تلفن همراه'],
+		6 => ['slug' => 'shahrdari', 'name' => 'شهرداری'],
+		9 => ['slug' => 'rahnamai_ranandegi', 'name' => 'راهنمایی و رانندگی']
 	];
 
 	/**
 	 * @param $cardNumber
 	 *
 	 * @return string
+	 * @throws Exception
 	 */
 	public function cardBankName ($cardNumber)
 	{
@@ -77,9 +78,12 @@ class IranianBankHelper
 	}
 
 	/**
-	 * @param $cardNumber
+	 * @param $shebaNumber
 	 *
 	 * @return string
+	 * @throws Exception
+	 * @internal param $cardNumber
+	 *
 	 */
 	public function shebaBankName ($shebaNumber)
 	{
@@ -98,7 +102,7 @@ class IranianBankHelper
 			}
 		}
 
-		throw new Exception('could not sheba account`s vendor name!');
+		throw new Exception('could not detect sheba account`s vendor name!');
 	}
 
 	/**
@@ -120,11 +124,16 @@ class IranianBankHelper
 	/**
 	 * @param $billId
 	 *
-	 * @return mixed
+	 * @return array
+	 * @throws Exception
 	 */
 	protected function getBillType ($billId)
 	{
-		return static::$_billTypes[substr($billId, -2, -1)];
+		if (isset(static::$_billTypes[substr($billId, -2, -1)])) {
+			return static::$_billTypes[substr($billId, -2, -1)];
+		}
+
+		throw new Exception('could not detect bill`s vendor name!');
 	}
 
 	/**
