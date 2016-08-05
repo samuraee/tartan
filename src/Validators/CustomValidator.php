@@ -91,4 +91,18 @@ class CustomValidator
 
 		return true;
 	}
+
+	/**
+	 * Validate UUID format
+	 * @param $attribute
+	 * @param $value
+	 * @param $parameters
+	 * @param $validator
+	 *
+	 * @return bool
+	 */
+	public function validateUuid($attribute, $value, $parameters, $validator)
+	{
+		return preg_match('/^\{?[0-9a-f]{8}\-?[0-9a-f]{4}\-?[0-9a-f]{4}\-?[0-9a-f]{4}\-?[0-9a-f]{12}\}?$/i', $value) === 1;
+	}
 }
