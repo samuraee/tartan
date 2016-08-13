@@ -29,7 +29,7 @@
 			"Tartan\\": "src"
 		},
 		"files": [
-			"src/Helpers/persianHelpers.php"
+			"src/Helpers/persianHelper.php"
 		]
 	},
 	"extra": {
