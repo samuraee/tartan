@@ -78,8 +78,10 @@ if (! function_exists('englishFilter')) {
 }
 
 if (! function_exists('persianMoney')) {
-	function persianMoney ($string, $currency = false)
+	function persianMoney ($string, $currency = false, $locale = 'fa')
 	{
-		return persian(number_format($string)) . ($currency ? ' ریال' : '');
+		$money = ($locale == 'fa') ? persian(number_format($string)) : number_format($string);
+
+		return $money . ($currency ? ' ریال' : '');
 	}
 }
