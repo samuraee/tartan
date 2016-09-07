@@ -35,16 +35,19 @@ if (! function_exists('random_string')) {
 }
 
 if (! function_exists('persian')) {
-	function persian ($string)
+	function persian ($string, $digits = true)
 	{
 		$farsiArray      = array("۰", "۱", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹");
 		$arabicArray     = array("٠", "١", "٢", "٣", "٤", "٥", "٦", "٧", "٨", "٩");
 		$englishArray    = array("0", "1", "2", "3", "4", "5", "6", "7", "8", "9");
+
 		$nonPersianArray = array("ى", "ي", "ك", "ئ", "إ", "أ", "ٱ", "ة", "ؤ", "ء");
 		$persianArray    = array("ی", "ی", "ک", "ی", "ا", "ا", "ﺍ", "ه", "و", "");
 
-		$string = str_replace($englishArray, $farsiArray, $string);
-		$string = str_replace($arabicArray, $farsiArray, $string);
+		if ($digits) {
+			$string = str_replace($englishArray, $farsiArray, $string);
+			$string = str_replace($arabicArray, $farsiArray, $string);
+		}
 		$string = str_replace($nonPersianArray, $persianArray, $string);
 
 		return $string;
