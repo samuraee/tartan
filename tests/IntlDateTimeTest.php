@@ -1,11 +1,11 @@
 <?php
-require(__DIR__ . '/../src/Tartan/IntlDatetime.php');
+require(__DIR__ . '/../src/IntlDatetime.php');
 
 use \Tartan\IntlDatetime;
 
-class IntlDatetimeTest extends PHPUnit_Framework_TestCase 
+class IntlDatetimeTest extends PHPUnit_Framework_TestCase
 {
-	function testCalendars() 
+	function testCalendars()
 	{
 		$expected = strtotime('2010/01/13');
 		$date = new IntlDatetime('2010/01/13', null, 'gregorian');
@@ -31,7 +31,7 @@ class IntlDatetimeTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals($result, '2010/01/13');
 	}
 
-	function testLocales() 
+	function testLocales()
 	{
 		$date = new IntlDatetime('۲۰۱۰/۰۱/۱۳ ۱۲:۴۲:۲۰', null, 'gregorian', 'fa');
 		$result = $date->format('yyyy/MM/dd HH:mm:ss');
@@ -48,7 +48,7 @@ class IntlDatetimeTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals($result, '2010/01/13 12:42:20');
 	}
 
-	function testSet() 
+	function testSet()
 	{
 		$date = new IntlDatetime('now', null, 'gregorian');
 
@@ -124,7 +124,7 @@ class IntlDatetimeTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals($result, '۱۳۸۸/۱۱/۲۲ ۲۳:۵۰:۰۰');
 	}
 
-	function testModify() 
+	function testModify()
 	{
 		$date = new IntlDatetime('1388/04/01', 'Asia/Tehran', 'persian');
 		$date->modify('+1 month');
@@ -157,7 +157,7 @@ class IntlDatetimeTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals($result, '1388/07/01 01:00:00');
 	}
 
-	function testGetTimestamp() 
+	function testGetTimestamp()
 	{
 		$date = new IntlDatetime('2010/01/01');
 		$result = $date->getTimestamp();
@@ -180,7 +180,7 @@ class IntlDatetimeTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals($result, $now);
 	}
 
-	function testSetDate() 
+	function testSetDate()
 	{
 		$date = new IntlDatetime('yesterday');
 		$date->setDate(2009, 1, 15);
