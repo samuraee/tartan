@@ -105,4 +105,39 @@ class CustomValidator
 	{
 		return preg_match('/^\{?[0-9a-f]{8}\-?[0-9a-f]{4}\-?[0-9a-f]{4}\-?[0-9a-f]{4}\-?[0-9a-f]{12}\}?$/i', $value) === 1;
 	}
+
+	/**
+	 * validating Iranian national id code
+	 * @reference http://www.aliarash.com/article/codemeli/codemeli.htm
+	 * @param $attribute
+	 * @param $value
+	 * @param $parameters
+	 * @param $validator
+	 *
+	 * @return bool
+	 */
+	public function validateNationalId ($attribute, $value, $parameters, $validator)
+	{
+		if(empty($value) || !is_numeric($value))
+		{
+			return false;
+		}
+
+		$value = str_pad($value, 10, '0', STR_PAD_LEFT); // pad to 10 digits
+
+		$value = str_split($value);
+
+		$sum = 0;
+		for ($i=0; $i<=8; $i++) {
+			$sum += (10-$i) * $value[$i];
+		}
+
+		$m = $sum%11;
+
+		if ($m <= 2) {
+			return $m == $value[9];
+		} else {
+			return (11-$m) == $value[9];
+		}
+	}
 }
