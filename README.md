@@ -1,29 +1,26 @@
-Tartan
+Tartan - Laravel Extended Features
 ============
 
-License
--------
-MIT license.
-
-Install
+Installation
 -------
 ```
-composer require "iamtartan/tartan:@dev"
+composer require "iamtartan/tartan"
 ```
 
-Tartan Custom Validators
--------------------------
-Add the following line to boot method of `app/Providers/AppServiceProvider.php`
- 
-```
- Validator::extend('strength', 'Tartan\Validators\CustomValidator@validateStrength');
- Validator::extend('iran_billing_id', 'Tartan\Validators\CustomValidator@validateIranBillingId');
-```
 
-Add following lines to `resources/lang/en/validation.php` in `Custom Validation Language Lines` part
+## Team
 
-```
-'strength' => 'The password :attribute is too weak and must contain one or more uppercase, lowercase, numeric, and special character (!@#$%^&*).',
-'iran_billing_id' => 'The billing Id `:attribute` is not a valid Billing Id.',
-'shetab_card' => 'The card number `:attribute` is not a valid Shetab card number.',
-```
+This component is developed by the following person(s) and a bunch of [awesome contributors](https://github.com/iamtartan/tartan/graphs/contributors).
+
+[![Aboozar Ghaffari](https://avatars2.githubusercontent.com/u/502961?v=3&s=70)](https://github.com/iamtartan) |
+--- |
+[Aboozar Ghaffari](https://github.com/iamtartan) |
+
+
+##Support This Project
+  
+[![Donate via Paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=LXEL22GFTXTKN)
+
+### License
+
+The Laravel Custom Validator is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
