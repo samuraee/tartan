@@ -25,7 +25,7 @@ class PersianDateHelper
 	/**
 	 * Persian to Gregorian
 	 * @param $date
-	 * @param string $format
+	 * @param string $format or array for input and output check. example ['input'=>'yyyy/MM/dd H:m:s', 'output'=>'yyyy/MM/dd H:m:s']
 	 * @param string $inputLocale
 	 * @param string $locale
 	 *
@@ -33,11 +33,19 @@ class PersianDateHelper
 	 */
 	public function pTog($date, $format = 'yyyy/MM/dd H:m:s', $inputLocale = 'fa', $locale = 'en')
 	{
-		$date = new IntlDatetime($date, 'Asia/Tehran', 'persian', $inputLocale);
+        	$inputPattern = null;
+       		$outputFormat = $format;
+		
+       		if(is_array($format)){
+           		$inputPattern = isset($format['input'])?$format['input']:null;
+           		$outputFormat = isset($format['output'])?$format['output']:'yyyy/MM/dd H:m:s';
+        	}
+		
+		$date = new IntlDatetime($date, 'Asia/Tehran', 'persian', $inputLocale, $inputPattern);
 
 		$date->setCalendar('Gregorian');
 		$date->setLocale($locale);
-		return $date->format($format);
+		return $date->format($outputFormat);
 	}
 
 	public function moment($ts)
